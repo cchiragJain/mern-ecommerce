@@ -1,32 +1,40 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 
 import Product from "../components/Product";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { listProducts } from "../actions/productActions";
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+
+  const { loading, error, products } = useSelector(
+    (state) => state.productList
+  );
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      /* added a proxy in package.json file for this to work
-      https://create-react-app.dev/docs/proxying-api-requests-in-development/ */
-      const { data } = await axios.get("/api/products");
-      setProducts(data);
-    };
-    fetchProducts();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <div>
       <h1>Latest Products</h1>
-      <Row>
-        {products.map((product) => (
-          <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>
+      {/* if loading true display loading if false check error and display if true if error false display the component */}
+      {loading ? (
+        <Loader/>
+      ) : error ? (
+        <Message variant='danger'>{error}</Message>
+      ) : (
+        <Row>
+          {products.map((product) => (
+            <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
+              <Product product={product} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </div>
   );
 };

@@ -11,6 +11,8 @@ export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
+    /* added a proxy in package.json file for this to work
+      https://create-react-app.dev/docs/proxying-api-requests-in-development/ */
     const { data } = await axios.get("/api/products");
 
     dispatch({
