@@ -1,4 +1,5 @@
 import express from "express";
+// using asyncHandler so no need to use try-catch blocks
 import asyncHandler from "express-async-handler";
 
 import Product from "../models/productModel.js";
@@ -28,7 +29,8 @@ router.get(
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "Product not found!" });
+      res.status(404);
+      throw new Error("Product not found");
     }
   })
 );
