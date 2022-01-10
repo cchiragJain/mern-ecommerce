@@ -1,9 +1,12 @@
 import express from "express";
-import { config } from "dotenv";
+import dotenv from "dotenv";
+import connectDB from "./config/db.js";
 import products from "./data/products.js";
 
 // can use environment variables using dotenv
-config();
+dotenv.config();
+
+connectDB();
 
 // initialise app
 const app = express();
