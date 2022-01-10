@@ -15,7 +15,8 @@ const ProductScreen = () => {
       setProduct(data);
     };
     fetchProduct();
-  }, []);
+    // will depend on the value of id
+  }, [id]);
 
   return (
     <div>
@@ -49,7 +50,7 @@ const ProductScreen = () => {
                 <Row>
                   <Col>Price:</Col>
                   <Col>
-                    <strong>${product.price}</strong>
+                    <strong>&#8377; {product.price}</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
