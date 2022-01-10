@@ -1,12 +1,24 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 
 import Product from "../components/Product";
-// using dummy data for now
-import products from "../products";
 
 const HomeScreen = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      /* added a proxy in package.json file for this to work
+      https://create-react-app.dev/docs/proxying-api-requests-in-development/ */
+      const { data } = await axios.get("/api/products");
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
+
   return (
-    <>
+    <div>
       <h1>Latest Products</h1>
       <Row>
         {products.map((product) => (
@@ -15,7 +27,7 @@ const HomeScreen = () => {
           </Col>
         ))}
       </Row>
-    </>
+    </div>
   );
 };
 
