@@ -1,0 +1,14 @@
+{
+  "name": "mern_ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon backend/server"
+  },
+  "author": "Chirag Jain",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
