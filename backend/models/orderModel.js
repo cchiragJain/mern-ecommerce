@@ -77,7 +77,7 @@ const orderSchema = new Schema(
       default: false,
     },
     deliveredAt: {
-      type: Data,
+      type: Date,
     },
   },
   {
