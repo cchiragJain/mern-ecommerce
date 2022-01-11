@@ -91,10 +91,11 @@ const ProductScreen = ({ history }) => {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <Row>
-                      <Col>Qty</Col>
+                      <Col>Qty:</Col>
                       <Col>
                         <Form.Control
                           as="select"
+                          style={{ width: "unset" }}
                           value={qty}
                           onChange={(e) => setQty(e.target.value)}
                         >
