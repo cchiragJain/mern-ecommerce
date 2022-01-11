@@ -21,11 +21,12 @@ const HomeScreen = () => {
   return (
     <div>
       <h1>Latest Products</h1>
+      {/* TODO: Use && operators acc to official React doc in productScreen as well*/}
       {/* if loading true display loading if false check error and display if true if error false display the component */}
       {loading ? (
-        <Loader/>
+        <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <Row>
           {products.map((product) => (
