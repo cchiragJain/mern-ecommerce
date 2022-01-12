@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { CART_ADD_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 
 // using getState can get the entire state
 export const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -19,5 +19,14 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
   });
 
   // setting it here and will get in the initialState of our store
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const removeFromCart = (id) => (dispatch, getState) => {
+  dispatch({
+    type: CART_REMOVE_ITEM,
+    payload: id,
+  });
+
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
