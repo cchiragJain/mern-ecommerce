@@ -16,8 +16,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/products/:id" element={<ProductScreen />} />
-            {/* id is optional */}
+            {/* optional params don't work in react-router-dom v6 */}
             <Route path="/cart/:id" element={<CartScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
           </Routes>
         </Container>
       </main>

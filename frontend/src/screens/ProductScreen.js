@@ -12,12 +12,13 @@ import {
 } from "react-bootstrap";
 
 import { listProductDetails } from "../actions/productActions";
+import { addToCart } from "../actions/cartActions";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 const ProductScreen = ({ history }) => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,8 +33,8 @@ const ProductScreen = ({ history }) => {
   }, [dispatch, id]);
 
   const addToCartHandler = () => {
-    // history.push(`/cart/${id}?qty=${qty}`);
-    navigate(`/cart/${id}?qty=${qty}`);
+    dispatch(addToCart(product._id, qty));
+    navigate(`/cart/${id}`);
   };
 
   return (
