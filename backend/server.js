@@ -4,6 +4,7 @@ import morgan from "morgan";
 
 import connectDB from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 // can use environment variables using dotenv
@@ -14,6 +15,9 @@ connectDB();
 // initialise app
 const app = express();
 
+// middleware that will parse json fromm post requests
+app.use(express.json());
+
 // logging library
 app.use(morgan("dev"));
 
@@ -22,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
 // 404 pages
 app.use(notFound);
