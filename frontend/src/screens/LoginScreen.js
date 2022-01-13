@@ -24,9 +24,11 @@ const LoginScreen = () => {
   const { loading, error, userInfo } = userLogin;
 
   useEffect(() => {
-    // if user already logged in and there is a redirect go to that redirect
+    // if got userinfo and there is a redirect navigate to that
+    // using .. since react-rotuer now uses relative links
+    // if not used will go to login/redirect
     if (userInfo && redirect) {
-      navigate(redirect);
+      navigate(`../${redirect}`);
     }
     // if logged in & no redirect go to the main page
     else if (userInfo) {
