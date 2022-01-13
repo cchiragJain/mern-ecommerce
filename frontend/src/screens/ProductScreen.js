@@ -60,7 +60,7 @@ const ProductScreen = ({ history }) => {
               <ListGroup.Item>
                 <Rating
                   value={product.rating}
-                  text={`${product.numReviews} reviews`}
+                  text={`${product.numReviews} Reviews`}
                 />
               </ListGroup.Item>
               <ListGroup.Item>Price: &#8377; {product.price}</ListGroup.Item>
@@ -98,7 +98,7 @@ const ProductScreen = ({ history }) => {
                           as="select"
                           style={{ width: "unset" }}
                           value={qty}
-                          onChange={(e) => setQty(e.target.value)}
+                          onChange={(e) => setQty(Number(e.target.value))}
                         >
                           {/* if countInStock is 5 will create an array of 0,1,2,3,4 which we are mapping over and creating option elements */}
                           {[...Array(product.countInStock).keys()].map((x) => (
