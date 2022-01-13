@@ -38,6 +38,19 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// pre saving the data by mongo
+userSchema.pre("save", async function (next) {
+  // isModified is from mongoose
+  // pass in the field you want to check
+  // don't want to create new hash
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
 const User = mongoose.model("User", userSchema);
 
 export default User;
