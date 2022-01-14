@@ -53,7 +53,7 @@ const RegisterScreen = () => {
       // on success let the display message of profile updated be there for 1.5 sec
       setTimeout(() => {
         dispatch(resetUpdateUserProfile());
-      }, 1500);
+      }, 5000);
     }
   }, [success, dispatch]);
 

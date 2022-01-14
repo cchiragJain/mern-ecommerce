@@ -34,7 +34,7 @@ const ProductScreen = ({ history }) => {
 
   const addToCartHandler = () => {
     dispatch(addToCart(product._id, qty));
-    navigate(`/cart/${id}`);
+    navigate(`/cart`);
   };
 
   return (
