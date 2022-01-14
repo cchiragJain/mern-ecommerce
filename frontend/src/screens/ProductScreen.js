@@ -17,7 +17,7 @@ import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
-const ProductScreen = ({ history }) => {
+const ProductScreen = () => {
   const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
@@ -39,9 +39,9 @@ const ProductScreen = ({ history }) => {
 
   return (
     <div>
-      <Link className="btn btn-dark my-3" to="/">
+      <Button className="btn btn-dark my-3" onClick={() => navigate(-1)}>
         Go back
-      </Link>
+      </Button>
       {loading ? (
         <Loader />
       ) : error ? (

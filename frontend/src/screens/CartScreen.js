@@ -35,12 +35,7 @@ const CartScreen = () => {
         <h1>Shopping Cart</h1>
         {/* default variant for message is info(blue color) */}
         {cartItems.length === 0 ? (
-          <>
-            <Message>Your cart is empty</Message>
-            <Link className="btn btn-dark my-3" to="/">
-              Go Back
-            </Link>
-          </>
+          <Message>Your cart is empty</Message>
         ) : (
           <ListGroup variant="flush">
             {cartItems.map((item) => (
@@ -85,6 +80,9 @@ const CartScreen = () => {
             ))}
           </ListGroup>
         )}
+        <Button className="btn btn-dark my-3" onClick={() => navigate(-1)}>
+          Go Back
+        </Button>
       </Col>
       <Col md={4}>
         <Card>
