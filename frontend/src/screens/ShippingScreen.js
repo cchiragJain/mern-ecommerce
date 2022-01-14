@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button } from "react-bootstrap";
@@ -10,6 +10,16 @@ import CheckoutSteps from "../components/CheckoutSteps";
 const ShippingScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  // if user not logged send to the login screen with redirect of shipping
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login?redirect=shipping");
+    }
+  }, [navigate, userInfo]);
 
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
