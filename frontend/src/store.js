@@ -34,7 +34,7 @@ const userInfoFromLocalStorage = localStorage.getItem("userInfo")
 
 const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
-  : null;
+  : {};
 
 // using Local Storage for cart and userInfo is a bad idea
 // need to fix this to use cookies instead for login info
