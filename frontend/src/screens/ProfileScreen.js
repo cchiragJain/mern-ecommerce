@@ -40,17 +40,22 @@ const RegisterScreen = () => {
       if (!user || !user.name) {
         // get user details
         dispatch(getUserDetails("profile"));
-      } else if (success) {
-        // on success let the display message of profile updated be there for 1.5 sec
-        setTimeout(() => {
-          dispatch(resetUpdateUserProfile());
-        }, 1500);
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [navigate, dispatch, userInfo, user, success]);
+  }, [navigate, dispatch, userInfo, user]);
+
+  useEffect(() => {
+    // moved success dependency on its own useEffect because was dispatching resetUpdateUserProfile 3 times due to state changes
+    if (success) {
+      // on success let the display message of profile updated be there for 1.5 sec
+      setTimeout(() => {
+        dispatch(resetUpdateUserProfile());
+      }, 1500);
+    }
+  }, [success, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
