@@ -8,10 +8,10 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
-  USER_REGISTER_REMOVE,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  USER_REGISTER_RESET,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -95,9 +95,9 @@ export const register = (name, email, password) => async (dispatch) => {
   }
 };
 
-export const removeRegister = () => (dispatch) => {
+export const resetRegister = () => (dispatch) => {
   dispatch({
-    type: USER_REGISTER_REMOVE,
+    type: USER_REGISTER_RESET,
   });
 };
 

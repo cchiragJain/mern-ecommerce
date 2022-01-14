@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-import { logout, removeRegister } from "../actions/userActions";
+import { logout, resetRegister } from "../actions/userActions";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
-    dispatch(removeRegister());
+    dispatch(resetRegister());
   };
 
   return (
