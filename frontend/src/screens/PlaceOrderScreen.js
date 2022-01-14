@@ -1,14 +1,38 @@
+import { useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { createOrder } from "../actions/orderActions";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 
 const PlaceOrderScreen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // if not logged in
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [navigate, userInfo]);
+
   const cart = useSelector((state) => state.cart);
 
-  // Calculate all prices
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, success, error } = orderCreate;
 
+  useEffect(() => {
+    if (success) {
+      navigate(`/order/${order._id}`);
+    }
+    // eslint-disable-next-line
+  }, [success, navigate]);
+
+  // Calculate all prices
   // calculates total
   // start from 0 and add for each item it's price * qty to 0
   cart.itemsPrice = cart.cartItems.reduce(
@@ -16,16 +40,29 @@ const PlaceOrderScreen = () => {
     0
   );
 
-  // shipping is 500 across all products
+  // shipping price
+  // shipping is same across all products
   cart.shippingPrice = 500;
 
+  // tax price
   // 10% tax
-  cart.taxPrice = cart.itemsPrice * 0.1;
+  cart.taxPrice = cart.itemsPrice * 0.18;
 
+  // totalPrice
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
   const placeOrderHandler = () => {
-    console.log("placed order");
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
   };
 
   return (
@@ -104,7 +141,7 @@ const PlaceOrderScreen = () => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col>Tax (10%)</Col>
+                  <Col>Tax (18%)</Col>
                   <Col>&#8377;{cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
@@ -114,6 +151,11 @@ const PlaceOrderScreen = () => {
                   <Col>&#8377;{cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              {error && (
+                <ListGroup.Item>
+                  <Message variant="danger">{error}</Message>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 <Button
                   type="button"
