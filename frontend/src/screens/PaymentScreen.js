@@ -37,6 +37,7 @@ const PaymentScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // just in case if needed to add more methods in the future
     dispatch(savePaymentMethod(paymentMethod));
     navigate("/placeorder");
   };
@@ -47,28 +48,19 @@ const PaymentScreen = () => {
       <h1>Select Payment Method</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group>
-          <Form.Label as="legend">Select Method</Form.Label>
+          <Col>
+            <Form.Check
+              type="radio"
+              label="PayPal or Credit Card"
+              id="PayPal"
+              name="paymentMethod"
+              value="PayPal"
+              checked
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            {/* can add more checkboxes here for other payment API's */}
+          </Col>
         </Form.Group>
-
-        <Col>
-          <Form.Check
-            type="radio"
-            label="PayPal or Credit Card"
-            id="PayPal"
-            name="paymentMethod"
-            value="PayPal"
-            checked
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          <Form.Check
-            type="radio"
-            label="Stripe"
-            id="Stripe"
-            name="paymentMethod"
-            value="Stripe"
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-        </Col>
 
         <Button type="submit" variant="primary">
           Continue
