@@ -6,7 +6,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import {
   getUserDetails,
   updateUserProfile,
-  updateUserProfileReset,
+  resetUpdateUserProfile,
 } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -29,7 +29,7 @@ const RegisterScreen = () => {
   const { userInfo } = userLogin;
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  let { success } = userUpdateProfile;
+  const { success } = userUpdateProfile;
 
   useEffect(() => {
     // if user is not logged in should not be able to access the profile page
@@ -37,16 +37,14 @@ const RegisterScreen = () => {
     if (!userInfo) {
       navigate("/login?redirect=profile");
     } else {
-      if (!user.name) {
+      if (!user || !user.name) {
         // get user details
         dispatch(getUserDetails("profile"));
       } else if (success) {
-        // console.log(success);
-        // to remove the profile updated message
+        // on success let the display message of profile updated be there for 1.5 sec
         setTimeout(() => {
-          // console.log("running inside set timeout");
-          dispatch(updateUserProfileReset());
-        }, 3000);
+          dispatch(resetUpdateUserProfile());
+        }, 1500);
       } else {
         setName(user.name);
         setEmail(user.email);

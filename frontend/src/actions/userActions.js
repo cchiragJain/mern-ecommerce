@@ -8,10 +8,11 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_REGISTER_RESET,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
-  USER_REGISTER_RESET,
+  USER_DETAILS_RESET,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
@@ -139,6 +140,12 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
   }
 };
 
+export const resetUserDetails = () => (dispatch) => {
+  dispatch({
+    type: USER_DETAILS_RESET,
+  });
+};
+
 export const updateUserProfile = (user) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -162,6 +169,19 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       type: USER_UPDATE_PROFILE_SUCCESS,
       payload: data,
     });
+
+    // after profile need to update the values for userInfo as well
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+    // update the localStorage
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
@@ -173,7 +193,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   }
 };
 
-export const updateUserProfileReset = () => (dispatch) => {
+export const resetUpdateUserProfile = () => (dispatch) => {
   dispatch({
     type: USER_UPDATE_PROFILE_RESET,
   });
