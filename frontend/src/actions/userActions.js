@@ -15,6 +15,7 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_RESET,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -170,4 +171,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const updateUserProfileReset = () => (dispatch) => {
+  dispatch({
+    type: USER_UPDATE_PROFILE_RESET,
+  });
 };

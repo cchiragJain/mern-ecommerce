@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Row, Col } from "react-bootstrap";
 
-import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import {
+  getUserDetails,
+  updateUserProfile,
+  updateUserProfileReset,
+} from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
@@ -36,12 +40,19 @@ const RegisterScreen = () => {
       if (!user.name) {
         // get user details
         dispatch(getUserDetails("profile"));
+      } else if (success) {
+        // console.log(success);
+        // to remove the profile updated message
+        setTimeout(() => {
+          // console.log("running inside set timeout");
+          dispatch(updateUserProfileReset());
+        }, 3000);
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [navigate, dispatch, userInfo, user]);
+  }, [navigate, dispatch, userInfo, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
