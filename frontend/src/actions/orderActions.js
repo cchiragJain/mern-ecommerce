@@ -7,6 +7,7 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
+  ORDER_CREATE_RESET,
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -42,6 +43,12 @@ export const createOrder = (order) => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const resetOrderCreate = () => (dispatch) => {
+  dispatch({
+    type: ORDER_CREATE_RESET,
+  });
 };
 
 export const getOrderDetails = (id) => async (dispatch, getState) => {

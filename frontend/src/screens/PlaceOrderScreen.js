@@ -3,7 +3,7 @@ import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { createOrder } from "../actions/orderActions";
+import { createOrder, resetOrderCreate } from "../actions/orderActions";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
 
@@ -16,7 +16,7 @@ const PlaceOrderScreen = () => {
   const { userInfo } = userLogin;
   useEffect(() => {
     if (!userInfo) {
-      navigate("/login");
+      navigate("/login?redirect=shipping");
     }
   }, [navigate, userInfo]);
 
@@ -25,9 +25,12 @@ const PlaceOrderScreen = () => {
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
 
+  // if success go to order details page
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`);
+      // DISPATCH HERE TO RESET ORDER CREATE
+      dispatch(resetOrderCreate());
     }
     // eslint-disable-next-line
   }, [success, navigate]);
