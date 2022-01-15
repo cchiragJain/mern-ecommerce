@@ -65,11 +65,12 @@ const getOrderById = asyncHandler(async (req, res) => {
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   // get order by id
   const order = await Order.findById(req.params.id);
+
   // update pay details only if the request is by a admin or the user
   if (order && (req.user.isAdmin || order.user._id.equals(req.user._id))) {
     order.isPaid = true;
     order.paidAt = Date.now();
-    // this will come from the payment api
+    // this will come from the payment api orderActions
     order.paymentResult = {
       id: req.body.id,
       status: req.body.status,
