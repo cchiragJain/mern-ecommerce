@@ -8,6 +8,8 @@ import {
   resetUserDetails,
 } from "../actions/userActions";
 
+import { resetGetOrderDetails } from "../actions/orderActions";
+
 const Header = () => {
   const dispatch = useDispatch();
 
@@ -18,6 +20,7 @@ const Header = () => {
     dispatch(logout());
     dispatch(resetRegister());
     dispatch(resetUserDetails());
+    dispatch(resetGetOrderDetails());
   };
 
   return (
