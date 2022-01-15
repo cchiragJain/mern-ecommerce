@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 
 import User from "../models/userModel.js";
 
+/* verifies the jwt token */
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -11,11 +12,14 @@ const protect = asyncHandler(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
+      // after Bearer
       token = req.headers.authorization.split(" ")[1];
+      // decode using secret
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // console.log(decoded);
 
+      // also check if the user exists in db
       // exclude the password
       req.user = await User.findById(decoded.id).select("-password");
       next();
