@@ -3,7 +3,11 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 
-import { listProductDetails } from "../actions/productActions";
+import {
+  listProductDetails,
+  updateProduct,
+  resetUpdateProduct,
+} from "../actions/productActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
@@ -34,6 +38,13 @@ const ProductEditScreen = () => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
+
   // fetch product detail on load
   useEffect(() => {
     dispatch(listProductDetails(productId));
@@ -57,9 +68,28 @@ const ProductEditScreen = () => {
     product.description,
   ]);
 
+  useEffect(() => {
+    if (successUpdate) {
+      dispatch(resetUpdateProduct());
+      navigate("/admin/productlist");
+    }
+  }, [dispatch, navigate, successUpdate]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     // DISPATCH UPDATE REQUEST HERE
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        brand,
+        category,
+        countInStock,
+        description,
+      })
+    );
   };
 
   return (
@@ -69,6 +99,8 @@ const ProductEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
