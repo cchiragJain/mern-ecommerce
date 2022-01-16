@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 import {
   getUserDetails,
   updateUserProfile,
   resetUpdateUserProfile,
 } from "../actions/userActions";
+import { listMyOrders } from "../actions/orderActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
@@ -31,15 +33,23 @@ const RegisterScreen = () => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
 
+  const orderListMyOrder = useSelector((state) => state.orderListMyOrder);
+  const {
+    loading: loadingOrders,
+    orders,
+    error: errorOrders,
+  } = orderListMyOrder;
+
   useEffect(() => {
     // if user is not logged in should not be able to access the profile page
     // redirect back to login and add a redirect of profile so can come back to this page
     if (!userInfo) {
-      navigate("/login?redirect=profile");
+      navigate("/login");
     } else {
       if (!user || !user.name) {
         // get user details
         dispatch(getUserDetails("profile"));
+        dispatch(listMyOrders());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -50,7 +60,7 @@ const RegisterScreen = () => {
   useEffect(() => {
     // moved success dependency on its own useEffect because was dispatching resetUpdateUserProfile 3 times due to state changes
     if (success) {
-      // on success let the display message of profile updated be there for 1.5 sec
+      // on success let the display message of profile updated be there for 5 sec
       setTimeout(() => {
         dispatch(resetUpdateUserProfile());
       }, 5000);
@@ -123,6 +133,54 @@ const RegisterScreen = () => {
       </Col>
       <Col md={9}>
         <h2>My orders</h2>
+        {loadingOrders ? (
+          <Loader />
+        ) : errorOrders ? (
+          <Message variant="danger">{errorOrders}</Message>
+        ) : (
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: "red" }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button className="btn-sm" variant="light">
+                        Details
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   );
