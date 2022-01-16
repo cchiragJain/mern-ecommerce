@@ -51,6 +51,20 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
+              {/* show only if admin */}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin Controls" id="adminmenu">
+                  <LinkContainer to="/admin/userlist">
+                    <NavDropdown.Item>All Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/productlist">
+                    <NavDropdown.Item>All Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/orderlist">
+                    <NavDropdown.Item>All Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

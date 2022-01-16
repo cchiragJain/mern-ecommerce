@@ -203,7 +203,7 @@ export const resetUpdateUserProfile = () => (dispatch) => {
   });
 };
 
-export const listAllUsers = (user) => async (dispatch, getState) => {
+export const listAllUsers = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_LIST_REQUEST,
