@@ -16,6 +16,7 @@ import {
   ORDER_LIST_MY_ORDER_REQUEST,
   ORDER_LIST_MY_ORDER_SUCCESS,
   ORDER_LIST_MY_ORDER_FAIL,
+  ORDER_LIST_MY_ORDER_RESET,
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -178,4 +179,10 @@ export const listMyOrders = () => async (dispatch, getState) => {
           : error.message,
     });
   }
+};
+
+export const resetListMyOrders = () => (dispatch) => {
+  dispatch({
+    type: ORDER_LIST_MY_ORDER_RESET,
+  });
 };
