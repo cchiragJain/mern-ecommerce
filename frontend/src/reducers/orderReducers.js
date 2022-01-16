@@ -67,7 +67,7 @@ export const orderDetailsReducer = (
       };
 
     case ORDER_DETAILS_RESET:
-      return {};
+      return { loading: true, orderItems: [], shippingAddress: {} };
 
     default:
       return state;

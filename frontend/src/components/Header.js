@@ -6,6 +6,7 @@ import {
   logout,
   resetRegister,
   resetUserDetails,
+  resetListAllUsers,
 } from "../actions/userActions";
 
 import { resetListMyOrders } from "../actions/orderActions";
@@ -19,8 +20,9 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(logout());
     dispatch(resetRegister());
-    dispatch(resetUserDetails());
     dispatch(resetListMyOrders());
+    dispatch(resetUserDetails());
+    dispatch(resetListAllUsers());
   };
 
   return (
