@@ -4,7 +4,12 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Button, Row, Col } from "react-bootstrap";
 
-import { listProducts, deleteProduct } from "../actions/productActions";
+import {
+  listProducts,
+  deleteProduct,
+  createProduct,
+  resetCreateProduct,
+} from "../actions/productActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
@@ -31,13 +36,32 @@ const ProductListScreen = () => {
     success: successDelete,
   } = productDelete;
 
+  const productCreate = useSelector((state) => state.productCreate);
+  console.log(productCreate);
+  const {
+    loading: loadingCreate,
+    success: successCreate,
+    product: createdProduct,
+    error: errorCreate,
+  } = productCreate;
+
   // list all products on first load or if successDelete changes
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch, successDelete]);
 
+  useEffect(() => {
+    // resetting to let new products be created
+    dispatch(resetCreateProduct());
+    if (successCreate) {
+      // navigate to the edit page
+      navigate(`/admin/product/${createdProduct._id}/edit`);
+    }
+  }, [dispatch, navigate, successCreate, createdProduct]);
+
   const createProductHandler = () => {
     console.log("product created");
+    dispatch(createProduct());
   };
 
   const deleteProductHandler = (productId) => {
@@ -66,6 +90,8 @@ const ProductListScreen = () => {
       </Row>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {loadingCreate && <Loader />}
+      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (

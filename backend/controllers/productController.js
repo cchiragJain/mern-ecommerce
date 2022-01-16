@@ -49,8 +49,8 @@ const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: "Sample name",
     price: 0,
-    user: req.user_id,
-    image: "/image/sample.jpg",
+    user: req.user._id,
+    image: "/images/sample.jpg",
     brand: "Sample brand",
     category: "Sample category",
     countInStock: 0,
@@ -59,8 +59,8 @@ const createProduct = asyncHandler(async (req, res) => {
   });
 
   // add the new product to db and send it back
-  const newProduct = await product.save();
-  res.status(201).json(newProduct);
+  const createdProduct = await product.save();
+  res.status(201).json(createdProduct);
 });
 
 // @desc Update a product
