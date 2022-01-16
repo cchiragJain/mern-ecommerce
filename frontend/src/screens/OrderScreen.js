@@ -43,6 +43,7 @@ const OrderScreen = () => {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
+  // only load on first render
   useEffect(() => {
     // PAYPAL SCRIPT
     const addPayPalScript = async () => {
@@ -60,21 +61,19 @@ const OrderScreen = () => {
       document.body.appendChild(script);
     };
 
+    addPayPalScript();
+  }, []);
+
+  useEffect(() => {
+    // if don't have a order or we get successPay dispatch to get new details
     if (!order || successPay) {
-      // console.log("order,spay", order, successPay);
       dispatch(resetPayOrder());
-      // if don't have a order or we get successPay dispatch to get new details
       dispatch(getOrderDetails(orderId));
-      console.log("orderafter,spay", order, successPay);
-    } else if (!order.isPaid) {
-      if (!window.paypal) {
-        addPayPalScript();
-      } else {
-        setSdkReady(true);
-      }
+      // console.log("orderafter,spay", order, successPay);
     }
   }, [dispatch, orderId, order, successPay]);
 
+  // paymentResult is returned from paypal
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
   };

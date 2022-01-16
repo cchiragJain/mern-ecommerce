@@ -3,7 +3,11 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button } from "react-bootstrap";
 
-import { getUserDetails } from "../actions/userActions";
+import {
+  getUserDetails,
+  updateUser,
+  resetUpdateUser,
+} from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
@@ -23,12 +27,19 @@ const UserEditScreen = () => {
 
   const { id: userId } = useParams();
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isAdmin, setIsAdmin] = useState("");
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const {
+    loading: loadingUpdate,
+    success: successUpdate,
+    error: errorUpdate,
+  } = userUpdate;
 
   // fetch user detail on load
   useEffect(() => {
@@ -41,9 +52,24 @@ const UserEditScreen = () => {
     setIsAdmin(user.isAdmin);
   }, [user.name, user.email, user.isAdmin]);
 
+  useEffect(() => {
+    if (successUpdate) {
+      dispatch(resetUpdateUser());
+      navigate("/admin/userlist");
+    }
+  }, [dispatch, navigate, successUpdate]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     // DISPATCH UPDATE REQUEST HERE
+    dispatch(
+      updateUser({
+        _id: userId,
+        name,
+        email,
+        isAdmin,
+      })
+    );
   };
 
   return (
@@ -53,6 +79,8 @@ const UserEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>Edit User</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -87,7 +115,6 @@ const UserEditScreen = () => {
                 label="Is Admin"
                 checked={isAdmin}
                 onChange={(e) => setIsAdmin(e.target.checked)}
-                required
               ></Form.Check>
             </Form.Group>
 
