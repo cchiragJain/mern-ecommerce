@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Button, Row, Col } from "react-bootstrap";
 
-import { listProducts } from "../actions/productActions";
+import { listProducts, deleteProduct } from "../actions/productActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
@@ -24,10 +24,17 @@ const ProductListScreen = () => {
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
-  // list all products on first load
+  const productDelete = useSelector((state) => state.productDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete;
+
+  // list all products on first load or if successDelete changes
   useEffect(() => {
     dispatch(listProducts());
-  }, [dispatch]);
+  }, [dispatch, successDelete]);
 
   const createProductHandler = () => {
     console.log("product created");
@@ -35,8 +42,9 @@ const ProductListScreen = () => {
 
   const deleteProductHandler = (productId) => {
     // puts a confirmation window
-    if (window.confirm("Are you sure you want to delete the user?")) {
+    if (window.confirm("Are you sure you want to delete the product?")) {
       // call delete handler
+      dispatch(deleteProduct(productId));
     }
   };
 
@@ -56,6 +64,8 @@ const ProductListScreen = () => {
           </Button>
         </Col>
       </Row>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
