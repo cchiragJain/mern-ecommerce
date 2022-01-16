@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Button } from "react-bootstrap";
 
-import { listAllUsers } from "../actions/userActions";
+import { listAllUsers, deleteUser } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
@@ -24,14 +24,20 @@ const UserListScreen = () => {
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
 
-  // get all users on first load
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
+  // get all users on first load and if successDelete changes again fetch all users
   useEffect(() => {
     dispatch(listAllUsers());
-  }, [dispatch]);
+  }, [dispatch, successDelete]);
 
   const deleteUserHandler = (userId) => {
-    console.log(userId);
-    console.log("deleted user");
+    // console.log("deleting");
+    // puts a confirmation window
+    if (window.confirm("Are you sure you want to delete the user?")) {
+      dispatch(deleteUser(userId));
+    }
   };
 
   return (
