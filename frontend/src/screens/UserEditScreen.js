@@ -47,9 +47,9 @@ const UserEditScreen = () => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    setName(user.name);
-    setEmail(user.email);
-    setIsAdmin(user.isAdmin);
+    setName(user.name || "");
+    setEmail(user.email || "");
+    setIsAdmin(user.isAdmin || "");
   }, [user.name, user.email, user.isAdmin]);
 
   useEffect(() => {

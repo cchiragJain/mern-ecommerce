@@ -24,11 +24,22 @@ const RegisterScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    // if user is not logged in should not be able to access the profile page
+    if (!userInfo) {
+      navigate("/login?redirect=profile");
+    }
+  }, [navigate, userInfo]);
+
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  useEffect(() => {
+    dispatch(getUserDetails("profile"));
+  }, [dispatch]);
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
   const { success } = userUpdateProfile;
@@ -41,20 +52,9 @@ const RegisterScreen = () => {
   } = orderListMyOrder;
 
   useEffect(() => {
-    // if user is not logged in should not be able to access the profile page
-    // redirect back to login and add a redirect of profile so can come back to this page
-    if (!userInfo) {
-      navigate("/login");
-    } else {
-      if (!user || !user.name) {
-        // get user details
-        dispatch(getUserDetails("profile"));
-      } else {
-        setName(user.name);
-        setEmail(user.email);
-      }
-    }
-  }, [navigate, dispatch, userInfo, user]);
+    setName(user.name || "");
+    setEmail(user.email || "");
+  }, [user.name, user.email]);
 
   useEffect(() => {
     // moved success dependency on its own useEffect because was dispatching resetUpdateUserProfile 3 times due to state changes
