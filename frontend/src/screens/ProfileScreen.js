@@ -49,7 +49,6 @@ const RegisterScreen = () => {
       if (!user || !user.name) {
         // get user details
         dispatch(getUserDetails("profile"));
-        dispatch(listMyOrders());
       } else {
         setName(user.name);
         setEmail(user.email);
@@ -66,6 +65,10 @@ const RegisterScreen = () => {
       }, 5000);
     }
   }, [success, dispatch]);
+
+  useEffect(() => {
+    dispatch(listMyOrders());
+  }, [dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
