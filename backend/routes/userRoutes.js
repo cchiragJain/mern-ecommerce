@@ -7,21 +7,33 @@ import {
   updateUserProfile,
   getAllUsers,
   deleteUser,
+  getUserById,
+  updateUser,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").post(registerUser).get(protect, admin, getAllUsers);
+// protect verifies the jwt token
+// admin cheks if the user is by a admin
+
+// prettier-ignore
+router
+  .route("/")
+  .post(registerUser)
+  .get(protect, admin, getAllUsers);
 
 router.route("/login").post(authUser);
 
-// protect middleware will run when we access that route
 router
   .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 
-router.route("/:id").delete(protect, admin, deleteUser);
+router
+  .route("/:id")
+  .delete(protect, admin, deleteUser)
+  .get(protect, admin, getUserById)
+  .put(protect, admin, updateUser);
 
 export default router;
