@@ -46,7 +46,7 @@ const getOrderById = asyncHandler(async (req, res) => {
     "user",
     "name email"
   );
-
+  // NOT using admin only middleware since can be a user request as well
   // pass the order details back if the request is by a admin or the user
   // === does not work for userid since it compares reference and not the values
   // refer -> https://stackoverflow.com/questions/11060213/mongoose-objectid-comparisons-fail-inconsistently
