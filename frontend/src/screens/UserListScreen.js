@@ -12,12 +12,12 @@ const UserListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // if not logged in send to the login page
+  // if not logged in or not a admin send to the login page
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   useEffect(() => {
-    if (!userInfo) {
-      navigate("/login?redirect=admin/userlist");
+    if (!userInfo || !userInfo.isAdmin) {
+      navigate("/login");
     }
   }, [navigate, userInfo]);
 
