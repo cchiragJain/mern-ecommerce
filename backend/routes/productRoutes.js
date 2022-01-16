@@ -3,14 +3,14 @@ import express from "express";
 import {
   getProducts,
   getProductById,
+  deleteProduct,
 } from "../controllers/productController.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// using .route instead of router.get('/',controller)
-// can add different methods to the same route then without explicitly mentioning the path
 router.route("/").get(getProducts);
 
-router.route("/:id").get(getProductById);
+router.route("/:id").get(getProductById).delete(protect, admin, deleteProduct);
 
 export default router;
