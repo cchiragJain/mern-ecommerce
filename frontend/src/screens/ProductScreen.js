@@ -28,8 +28,10 @@ const ProductScreen = () => {
   const { id } = useParams();
 
   const [qty, setQty] = useState(1);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);
   const [comment, setComment] = useState("");
+
+  const [message, setMessage] = useState(false);
 
   /* will need user login to only show review form if logged in */
   const userLogin = useSelector((state) => state.userLogin);
@@ -46,9 +48,27 @@ const ProductScreen = () => {
     dispatch(listProductDetails(id));
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (successReviewCreate) {
+      setMessage(true);
+      setTimeout(() => {
+        setMessage(false);
+      }, 3000);
+      setRating(1);
+      setComment("");
+      dispatch(resetCreateProductReview());
+      dispatch(listProductDetails(id));
+    }
+  }, [dispatch, id, successReviewCreate]);
+
   const addToCartHandler = () => {
     dispatch(addToCart(product._id, qty));
     navigate(`/cart`);
+  };
+
+  const submitReviewHandler = (e) => {
+    e.preventDefault();
+    dispatch(createProductReview(id, { rating, comment }));
   };
 
   return (
@@ -147,7 +167,8 @@ const ProductScreen = () => {
           {/* REVIEWS */}
           <Row>
             <Col md={6}>
-              <h2>Reviews</h2>
+              <h1>Reviews</h1>
+              {message && <Message variant="success">Review Submitted</Message>}
               {product.reviews.length === 0 && (
                 <Message>Be the first person to review this product!!!</Message>
               )}
@@ -163,11 +184,51 @@ const ProductScreen = () => {
                 ))}
                 <ListGroup.Item>
                   <h2>Write A Customer Review</h2>
+                  {errorReviewCreate && (
+                    <Message variant="danger">{errorReviewCreate}</Message>
+                  )}
                   {userInfo ? (
-                    <h1>Show form</h1>
+                    /* NEW REVIEW FROM */
+                    <Form onSubmit={submitReviewHandler}>
+                      <Form.Group controlId="rating">
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Select
+                          size="sm"
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value="1">1 - Poor</option>
+                          <option value="2">2 - Fair</option>
+                          <option value="3">3 - Good</option>
+                          <option value="4">4 - Very Good</option>
+                          <option value="5">5 - Excellent</option>
+                        </Form.Select>
+                      </Form.Group>
+                      <Form.Group controlId="comment">
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          row="3"
+                          placeholder="Enter review"
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button
+                        type="submit"
+                        variant="outline-primary"
+                        className="mt-3"
+                      >
+                        Submit Review
+                      </Button>
+                    </Form>
                   ) : (
                     <Message>
-                      Please <Link to="/login">Sign In</Link> to write a review
+                      Please{" "}
+                      <Link to={`/login?redirect=/products/${id}`}>
+                        Sign In
+                      </Link>{" "}
+                      to write a review
                     </Message>
                   )}
                 </ListGroup.Item>
