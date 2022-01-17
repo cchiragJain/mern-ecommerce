@@ -2,26 +2,31 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const reviewSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const reviewSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    // this is the individual review rating and not the average rating
+    rating: {
+      type: Number,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
-  // this is the individual review rating and not the average rating
-  rating: {
-    type: Number,
-    required: true,
-  },
-  comment: {
-    type: String,
-    required: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const productSchema = new Schema(
   {
