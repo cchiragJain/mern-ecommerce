@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createOrder, resetOrderCreate } from "../actions/orderActions";
 import Message from "../components/Message";
 import CheckoutSteps from "../components/CheckoutSteps";
+import Title from "../components/Title";
 
 const PlaceOrderScreen = () => {
   const dispatch = useDispatch();
@@ -69,7 +70,8 @@ const PlaceOrderScreen = () => {
   };
 
   return (
-    <div>
+    <>
+      <Title title="Place Order" />
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
@@ -173,7 +175,7 @@ const PlaceOrderScreen = () => {
           </Card>
         </Col>
       </Row>
-    </div>
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import {
 } from "../actions/productActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Title from "../components/Title";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -74,6 +75,7 @@ const ProductListScreen = () => {
 
   return (
     <>
+      <Title title="All Products | Admin" />
       <Row className="align-items-center">
         <Col>
           <h1>Products</h1>

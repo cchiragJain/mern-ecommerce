@@ -6,6 +6,7 @@ import { Form, Button, Col } from "react-bootstrap";
 import { savePaymentMethod } from "../actions/cartActions";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
+import Title from "../components/Title";
 
 const PaymentScreen = () => {
   const dispatch = useDispatch();
@@ -43,30 +44,33 @@ const PaymentScreen = () => {
   };
 
   return (
-    <FormContainer>
-      <CheckoutSteps step1 step2 step3 />
-      <h1>Select Payment Method</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group>
-          <Col>
-            <Form.Check
-              type="radio"
-              label="PayPal or Credit Card"
-              id="PayPal"
-              name="paymentMethod"
-              value="PayPal"
-              checked
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
-            {/* can add more checkboxes here for other payment API's */}
-          </Col>
-        </Form.Group>
+    <>
+      <Title title="Payment Method" />
+      <FormContainer>
+        <CheckoutSteps step1 step2 step3 />
+        <h1>Select Payment Method</h1>
+        <Form onSubmit={submitHandler}>
+          <Form.Group>
+            <Col>
+              <Form.Check
+                type="radio"
+                label="PayPal or Credit Card"
+                id="PayPal"
+                name="paymentMethod"
+                value="PayPal"
+                checked
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              {/* can add more checkboxes here for other payment API's */}
+            </Col>
+          </Form.Group>
 
-        <Button type="submit" variant="primary">
-          Continue
-        </Button>
-      </Form>
-    </FormContainer>
+          <Button type="submit" variant="primary">
+            Continue
+          </Button>
+        </Form>
+      </FormContainer>
+    </>
   );
 };
 

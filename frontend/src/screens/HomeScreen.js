@@ -8,6 +8,7 @@ import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import ProductCaraousel from "../components/ProductCaraousel";
+import Title from "../components/Title";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -23,12 +24,15 @@ const HomeScreen = () => {
     dispatch(listProducts(keyword));
   }, [dispatch, keyword]);
 
+  // checks if a object is empty
+  // if keyword is empty it will return true
   function isEmpty(obj) {
     return Object.keys(obj).length === 0;
   }
 
   return (
     <>
+      <Title title="Welcome to Proshop" />
       {keyword && isEmpty(keyword) && <ProductCaraousel />}
       <h1>Latest Products</h1>
       {/* if loading true display loading if false check error and display if true if error false display the component */}

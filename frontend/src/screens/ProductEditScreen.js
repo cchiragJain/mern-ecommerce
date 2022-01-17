@@ -12,6 +12,7 @@ import {
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
+import Title from "../components/Title";
 
 const ProductEditScreen = () => {
   const dispatch = useDispatch();
@@ -121,6 +122,7 @@ const ProductEditScreen = () => {
 
   return (
     <>
+      <Title title="Edit Product | Admin" />
       <Link to="/admin/productlist" className="btn btn-dark my-3">
         Go Back
       </Link>

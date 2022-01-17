@@ -11,6 +11,7 @@ import {
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
+import Title from "../components/Title";
 
 const UserEditScreen = () => {
   const dispatch = useDispatch();
@@ -74,6 +75,7 @@ const UserEditScreen = () => {
 
   return (
     <>
+      <Title title="Edit User | Admin" />
       <Link to="/admin/userlist" className="btn btn-dark my-3">
         Go Back
       </Link>

@@ -7,6 +7,7 @@ import { Table, Button } from "react-bootstrap";
 import { listUsers, deleteUser } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Title from "../components/Title";
 
 const UserListScreen = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const UserListScreen = () => {
 
   return (
     <>
+      <Title title="All Users | Admin" />
       <h1>All Users</h1>
       {loading ? (
         <Loader />

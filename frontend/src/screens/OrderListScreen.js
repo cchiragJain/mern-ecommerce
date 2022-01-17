@@ -7,6 +7,7 @@ import { Table, Button } from "react-bootstrap";
 import { listOrders } from "../actions/orderActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Title from "../components/Title";
 
 const OrderListScreen = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const OrderListScreen = () => {
 
   return (
     <>
+      <Title title="All Orders | Admin" />
       <h1>All Orders</h1>
       {loading ? (
         <Loader />
@@ -75,7 +77,7 @@ const OrderListScreen = () => {
                 <td>
                   {/* no need to create a new screen for admin only access this path loads the OrderScreen.js */}
                   <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant="light" className="btn-sm">
+                    <Button variant="outline-primary" className="btn-sm">
                       Details
                     </Button>
                   </LinkContainer>

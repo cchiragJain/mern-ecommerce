@@ -20,6 +20,7 @@ import { addToCart } from "../actions/cartActions";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Title from "../components/Title";
 
 const ProductScreen = () => {
   const dispatch = useDispatch();
@@ -73,6 +74,7 @@ const ProductScreen = () => {
 
   return (
     <>
+      <Title title={product.name} />
       <Button className="btn btn-dark my-3" onClick={() => navigate(-1)}>
         Go back
       </Button>

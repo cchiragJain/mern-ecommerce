@@ -14,6 +14,7 @@ import {
 } from "../actions/orderActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import Title from "../components/Title";
 
 const OrderScreen = () => {
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ const OrderScreen = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
+      <Title title="Order Details" />
       {/* on click go back to the previous page
         /profile for users access
         /admin/orderlist for admin access
