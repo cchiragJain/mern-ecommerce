@@ -41,6 +41,8 @@ const ProductScreen = () => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  console.log(error);
+
   const productReviewCreate = useSelector((state) => state.productReviewCreate);
   const { error: errorReviewCreate, success: successReviewCreate } =
     productReviewCreate;
@@ -74,7 +76,6 @@ const ProductScreen = () => {
 
   return (
     <>
-      <Title title={product.name} />
       <Button className="btn btn-dark my-3" onClick={() => navigate(-1)}>
         Go back
       </Button>
@@ -84,6 +85,7 @@ const ProductScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+          <Title title={product.name} />
           {/* PRODUCT DETAILS */}
           <Row>
             <Col md={6}>
