@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 
+import { listProducts } from "../actions/productActions";
 import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { listProducts } from "../actions/productActions";
+import ProductCaraousel from "../components/ProductCaraousel";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -22,8 +23,13 @@ const HomeScreen = () => {
     dispatch(listProducts(keyword));
   }, [dispatch, keyword]);
 
+  function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+  }
+
   return (
-    <div>
+    <>
+      {keyword && isEmpty(keyword) && <ProductCaraousel />}
       <h1>Latest Products</h1>
       {/* if loading true display loading if false check error and display if true if error false display the component */}
       {loading ? (
@@ -46,7 +52,7 @@ const HomeScreen = () => {
           ))}
         </Row>
       )}
-    </div>
+    </>
   );
 };
 
