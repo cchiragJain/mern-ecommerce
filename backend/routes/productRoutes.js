@@ -11,11 +11,7 @@ import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// prettier-ignore
-router
-  .route("/")
-  .get(getProducts)
-  .post(protect, admin, createProduct);
+router.route("/").get(getProducts).post(protect, admin, createProduct);
 
 router
   .route("/:id")

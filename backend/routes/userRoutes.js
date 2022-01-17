@@ -17,11 +17,7 @@ const router = express.Router();
 // protect verifies the jwt token
 // admin cheks if the user is by a admin
 
-// prettier-ignore
-router
-  .route("/")
-  .post(registerUser)
-  .get(protect, admin, getAllUsers);
+router.route("/").post(registerUser).get(protect, admin, getAllUsers);
 
 router.route("/login").post(authUser);
 
