@@ -24,29 +24,30 @@ import {
   PRODUCT_CREATE_REVIEW_RESET,
 } from "../constants/productConstants";
 
-// can make this action async because using thunk as middleware
-export const listProducts = () => async (dispatch) => {
-  try {
-    dispatch({ type: PRODUCT_LIST_REQUEST });
+// default keyword will be ''
+export const listProducts =
+  (keyword = "") =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    /* added a proxy in package.json file for this to work
+      /* added a proxy in package.json file for this to work
       https://create-react-app.dev/docs/proxying-api-requests-in-development/ */
-    const { data } = await axios.get("/api/products");
-
-    dispatch({
-      type: PRODUCT_LIST_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: PRODUCT_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      const { data } = await axios.get(`/api/products`, { params: keyword });
+      dispatch({
+        type: PRODUCT_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const listProductDetails = (id) => async (dispatch) => {
   try {

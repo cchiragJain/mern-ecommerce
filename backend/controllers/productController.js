@@ -3,16 +3,32 @@ import asyncHandler from "express-async-handler";
 
 import Product from "../models/productModel.js";
 
-// @desc Fetch all products
+// @desc Fetch all products depending on keyword
 // @route GET /api/products
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
-  // setTimeout(() => {}, 1000);
-  res.json(products);
+  // uses regex and ignores case matching
+  // also handles if no keyword is passed to list all products
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+  const products = await Product.find({ ...keyword });
+  if (products.length === 0) {
+    res.status(404);
+    throw new Error(
+      "Sorry That Product does not exist try searching for something else 😭"
+    );
+  } else {
+    res.json(products);
+  }
 });
 
-// @desc Fetch single products
+// @desc Fetch single product
 // @route GET /api/products/:id
 // @access Public
 const getProductById = asyncHandler(async (req, res) => {

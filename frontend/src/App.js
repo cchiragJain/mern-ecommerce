@@ -26,8 +26,8 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
+            <Route path="/search/:keyword" element={<HomeScreen />} />
             <Route path="/" element={<HomeScreen />} />
-            <Route path="/serach/:keyword" element={<HomeScreen />} />
             <Route path="/products/:id" element={<ProductScreen />} />
             {/* optional params don't work in react-router-dom v6 */}
             <Route path="/cart/:id" element={<CartScreen />} />
