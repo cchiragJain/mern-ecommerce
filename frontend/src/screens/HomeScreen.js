@@ -32,7 +32,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      <Title title="Welcome to Proshop" />
+      <Title title="Welcome to The Everything Store" />
       {keyword && isEmpty(keyword) && <ProductCaraousel />}
       <h1>Latest Products</h1>
       {/* if loading true display loading if false check error and display if true if error false display the component */}
