@@ -27,6 +27,7 @@ const App = () => {
         <Container>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/serach/:keyword" element={<HomeScreen />} />
             <Route path="/products/:id" element={<ProductScreen />} />
             {/* optional params don't work in react-router-dom v6 */}
             <Route path="/cart/:id" element={<CartScreen />} />
