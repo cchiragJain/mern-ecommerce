@@ -17,6 +17,10 @@ import {
   ORDER_LIST_MY_ORDER_SUCCESS,
   ORDER_LIST_MY_ORDER_FAIL,
   ORDER_LIST_MY_ORDER_RESET,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
+  ORDER_LIST_RESET,
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -184,5 +188,45 @@ export const listMyOrders = () => async (dispatch, getState) => {
 export const resetListMyOrders = () => (dispatch) => {
   dispatch({
     type: ORDER_LIST_MY_ORDER_RESET,
+  });
+};
+
+export const listOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ORDER_LIST_REQUEST,
+    });
+
+    // need user info since request needs to be authorized with a token
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/orders`, config);
+
+    dispatch({
+      type: ORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const resetListOrders = () => (dispatch) => {
+  dispatch({
+    type: ORDER_LIST_RESET,
   });
 };
