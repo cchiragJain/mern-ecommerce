@@ -9,6 +9,8 @@ import {
   getOrderDetails,
   payOrder,
   resetPayOrder,
+  deliverOrder,
+  resetDeliverOrder,
 } from "../actions/orderActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -27,7 +29,7 @@ const OrderScreen = () => {
     if (!userInfo) {
       navigate(`/login`);
     }
-  }, [navigate, userInfo, orderId]);
+  }, [navigate, userInfo]);
 
   const [sdkReady, setSdkReady] = useState(false);
 
@@ -43,9 +45,12 @@ const OrderScreen = () => {
   const orderPay = useSelector((state) => state.orderPay);
   const { loading: loadingPay, success: successPay } = orderPay;
 
-  // only load on first render
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
+
+  /* PAYPAL SCRIPT */
+  // only loads on first render
   useEffect(() => {
-    // PAYPAL SCRIPT
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal");
 
@@ -64,6 +69,7 @@ const OrderScreen = () => {
     addPayPalScript();
   }, []);
 
+  /* CHECK PAYMENT */
   useEffect(() => {
     // if don't have a order or we get successPay dispatch to get new details
     if (!order || successPay) {
@@ -76,6 +82,19 @@ const OrderScreen = () => {
   // paymentResult is returned from paypal
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));
+  };
+
+  /* CHECK DELIVER */
+  useEffect(() => {
+    if (!order || successDeliver) {
+      // on successDeliver reset the state and get new details
+      dispatch(resetDeliverOrder());
+      dispatch(getOrderDetails(orderId));
+    }
+  }, [dispatch, successDeliver, order, orderId]);
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order));
   };
 
   return loading ? (
@@ -112,7 +131,7 @@ const OrderScreen = () => {
               {/* check if delievered */}
               {order.isDelivered ? (
                 <Message variant="success">
-                  Delievered on {order.deliveredAt}
+                  Delievered on {order.deliveredAt.substring(0, 10)}
                 </Message>
               ) : (
                 <Message variant="danger">Not Delievered</Message>
@@ -127,7 +146,9 @@ const OrderScreen = () => {
               </p>
               {/* check if paid */}
               {order.isPaid ? (
-                <Message variant="success">Paid on {order.paidAt}</Message>
+                <Message variant="success">
+                  Paid on {order.paidAt.substring(0, 10)}
+                </Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
               )}
@@ -201,6 +222,24 @@ const OrderScreen = () => {
                   )}
                 </ListGroup.Item>
               )}
+              {/* ADMIN DELIVER BUTTON 
+                  Show only if user is admin, order is paid and not yet delivered
+              */}
+              {loadingDeliver && <Loader />}
+              {userInfo &&
+                userInfo.isAdmin &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="submit"
+                      className="btn btn-block"
+                      onClick={deliverHandler}
+                    >
+                      Mark As Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )}
             </ListGroup>
           </Card>
         </Col>
