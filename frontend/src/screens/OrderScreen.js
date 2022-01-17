@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -25,7 +25,7 @@ const OrderScreen = () => {
   const { userInfo } = userLogin;
   useEffect(() => {
     if (!userInfo) {
-      navigate(`/login?redirect=order/${orderId}`);
+      navigate(`/login`);
     }
   }, [navigate, userInfo, orderId]);
 
@@ -84,6 +84,13 @@ const OrderScreen = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
+      {/* on click go back to the previous page
+        /profile for users access
+        /admin/orderlist for admin access
+      */}
+      <Button className="btn btn-dark my-3" onClick={() => navigate(-1)}>
+        Go back
+      </Button>
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>

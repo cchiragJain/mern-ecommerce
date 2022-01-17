@@ -4,11 +4,11 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Button } from "react-bootstrap";
 
-import { listUsers, deleteUser } from "../actions/userActions";
+import { listOrders } from "../actions/orderActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 
-const UserListScreen = () => {
+const OrderListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,28 +21,17 @@ const UserListScreen = () => {
     }
   }, [navigate, userInfo]);
 
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
+  const orderList = useSelector((state) => state.orderList);
+  const { loading, error, orders } = orderList;
 
-  const userDelete = useSelector((state) => state.userDelete);
-  const { success: successDelete } = userDelete;
-
-  // get all users on first load and if successDelete changes again fetch all users
+  // get all orders on first load
   useEffect(() => {
-    dispatch(listUsers());
-  }, [dispatch, successDelete]);
-
-  const deleteUserHandler = (userId) => {
-    // console.log("deleting");
-    // puts a confirmation window
-    if (window.confirm("Are you sure you want to delete the user?")) {
-      dispatch(deleteUser(userId));
-    }
-  };
+    dispatch(listOrders());
+  }, [dispatch]);
 
   return (
     <>
-      <h1>All Users</h1>
+      <h1>All Orders</h1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -53,38 +42,43 @@ const UserListScreen = () => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ADMIN</th>
-              <th></th>
+              <th>USER</th>
+              <th>DATE</th>
+              <th>TOTAL</th>
+              <th>PAID</th>
+              <th>DELIEVERED</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
+            {orders.map((order) => (
+              <tr key={order._id}>
+                <td>{order._id}</td>
+                <td>{order.user && order.user.name}</td>
+                <td>{order.createdAt.substring(0, 10)}</td>
+                <td>&#8377; {order.totalPrice}</td>
                 <td>
-                  {user.isAdmin ? (
-                    <i className="fas fa-check" style={{ color: "green" }} />
+                  {/* if paid show date else red cross icon */}
+                  {order.isPaid ? (
+                    order.paidAt.substring(0, 10)
                   ) : (
                     <i className="fas fa-times" style={{ color: "red" }} />
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                  {/* if Delivered show date else red cross icon */}
+                  {order.isDelivered ? (
+                    order.deliveredAt.substring(0, 10)
+                  ) : (
+                    <i className="fas fa-times" style={{ color: "red" }} />
+                  )}
+                </td>
+                <td>
+                  {/* no need to create a new screen for admin only access this path loads the OrderScreen.js */}
+                  <LinkContainer to={`/order/${order._id}`}>
                     <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit" />
+                      Details
                     </Button>
                   </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => deleteUserHandler(user._id)}
-                  >
-                    <i className="fas fa-trash" />
-                  </Button>
                 </td>
               </tr>
             ))}
@@ -95,4 +89,4 @@ const UserListScreen = () => {
   );
 };
 
-export default UserListScreen;
+export default OrderListScreen;
