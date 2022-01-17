@@ -1,9 +1,8 @@
 import express from "express";
+import path from "path";
 import multer from "multer";
-import path, { extname } from "path";
 
 const router = express.Router();
-
 /* MULTER STORAGE CONFIG 
   Ref -> https://www.npmjs.com/package/multer
 */
@@ -11,7 +10,6 @@ const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, "uploads/");
   },
-
   filename(req, file, cb) {
     // take the current filename and add the current date to it with the extension name of the file
     cb(
@@ -30,23 +28,22 @@ const upload = multer({
 });
 
 /* 
-Mutler check file type ref -> https://stackoverflow.com/questions/60408575/how-to-validate-file-extension-with-multer-middleware
+Mutler check file type 
+Ref -> https://stackoverflow.com/questions/60408575/how-to-validate-file-extension-with-multer-middleware
 */
-
 function checkFileType(file, cb) {
-  // allowed extension names
-  const fileTypes = /jpg|jpeg|png/;
-  // check if current file matches the extension
-  const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimeType = fileTypes.test(file.mimeType);
+  const filetypes = /jpg|jpeg|png/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
 
-  if (extName && mimeType) {
+  if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb("images only");
+    cb("Images only!");
   }
 }
 
+// single route no need to make a controller
 router.post("/", upload.single("image"), (req, res) => {
   res.send(`/${req.file.path}`);
 });
