@@ -41,7 +41,7 @@ const ProductScreen = () => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
-  console.log(error);
+  // console.log(error);
 
   const productReviewCreate = useSelector((state) => state.productReviewCreate);
   const { error: errorReviewCreate, success: successReviewCreate } =
